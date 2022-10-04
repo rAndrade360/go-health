@@ -9,4 +9,5 @@ func main() {
 	e := echo.New()
 
 	e.POST("/user", user.Create)
+	e.Start(":3333")
 }
