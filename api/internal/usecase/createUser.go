@@ -8,15 +8,20 @@ import (
 	repo "github.com/rAndrade360/go-health/api/internal/repository/user"
 )
 
-func CreateUser(u *model.User) error {
+func CreateUser(u model.User) (*model.User, error) {
 	uu, err := uuid.NewUUID()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	u.ID = uu.String()
 	u.CreatedAt = time.Now()
 	u.UpdatedAt = time.Now()
 
-	return repo.Create(*u)
+	err = repo.Create(u)
+	if err != nil {
+		return nil, err
+	}
+
+	return &u, nil
 }

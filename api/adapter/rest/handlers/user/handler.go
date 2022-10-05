@@ -19,18 +19,18 @@ func Create(c echo.Context) error {
 		Username: userreq.Username,
 	}
 
-	err = usecase.CreateUser(&u)
+	us, err := usecase.CreateUser(u)
 	if err != nil {
 		return err
 	}
 
 	userres := user.CreateUserDtoRes{
-		ID:        u.ID,
-		Name:      u.Name,
-		Username:  u.Username,
-		CreatedAt: u.CreatedAt,
-		UpdatedAt: u.UpdatedAt,
+		ID:        us.ID,
+		Name:      us.Name,
+		Username:  us.Username,
+		CreatedAt: us.CreatedAt,
+		UpdatedAt: us.UpdatedAt,
 	}
 
-	return c.JSON(200, userres)
+	return c.JSON(201, userres)
 }
