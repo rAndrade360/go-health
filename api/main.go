@@ -11,5 +11,5 @@ func main() {
 
 	e.POST("/user", user.Create)
 	e.GET("/health", health.Health)
-	e.Start(":3333")
+	e.Start(":80")
 }
