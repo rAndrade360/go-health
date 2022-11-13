@@ -1,9 +1,21 @@
 package repository
 
 import (
-	"github.com/rAndrade360/go-health/api/internal/model"
+	"database/sql"
+
+	"github.com/rAndrade360/go-health/api/internal/domain"
 )
 
-func Create(user model.User) error {
+type userrepository struct {
+	db *sql.DB
+}
+
+func NewUserRepository(db *sql.DB) domain.UserRepository {
+	return userrepository{
+		db: db,
+	}
+}
+
+func (u userrepository) Create(user domain.User) error {
 	return nil
 }

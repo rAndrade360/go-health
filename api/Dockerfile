@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /go/bin/main .
+RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /go/bin/main ./api
 
 
 FROM scratch
