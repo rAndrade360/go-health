@@ -17,6 +17,4 @@ FROM scratch
 
 COPY --from=builder /go/bin/main .
 
-EXPOSE 80
-
 ENTRYPOINT ["/main"]
