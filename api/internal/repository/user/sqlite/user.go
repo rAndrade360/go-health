@@ -10,7 +10,7 @@ type userrepository struct {
 	db *sql.DB
 }
 
-func NewUserRepository(db *sql.DB) domain.UserRepository {
+func NewUserSqliteRepository(db *sql.DB) domain.UserRepository {
 	return userrepository{
 		db: db,
 	}
