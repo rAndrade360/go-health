@@ -2,12 +2,19 @@ package sqlite
 
 import (
 	"database/sql"
+	"errors"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func GetDB() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "temp.db")
+	dbpath := os.Getenv("SQLITE_DB_PATH")
+	if dbpath == "" {
+		return nil, errors.New("db path not set")
+	}
+
+	db, err := sql.Open("sqlite3", dbpath)
 	if err != nil {
 		return nil, err
 	}
