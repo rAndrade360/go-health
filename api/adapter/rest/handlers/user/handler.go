@@ -6,16 +6,18 @@ import (
 )
 
 type userHttpHandler struct {
-	usecase domain.UserUseCase
+	usecase             domain.UserUseCase
+	notificationusecase domain.NotificationUseCase
 }
 
 type UserHttpHandler interface {
 	Create(c echo.Context) error
 }
 
-func NewUserHttpHandler(usecase domain.UserUseCase) UserHttpHandler {
+func NewUserHttpHandler(usecase domain.UserUseCase, notificationusecase domain.NotificationUseCase) UserHttpHandler {
 	return userHttpHandler{
-		usecase: usecase,
+		usecase:             usecase,
+		notificationusecase: notificationusecase,
 	}
 }
 
@@ -27,6 +29,16 @@ func (u userHttpHandler) Create(c echo.Context) error {
 	}
 
 	us, err := u.usecase.CreateUser(userreq)
+	if err != nil {
+		return err
+	}
+
+	err = u.notificationusecase.SendToQueue(domain.Notification{
+		Title:   "User Creation",
+		Message: "User Created Successfully",
+		UserID:  us.ID,
+		Via:     "ntfy",
+	})
 	if err != nil {
 		return err
 	}
