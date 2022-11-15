@@ -24,6 +24,7 @@ func (u userUseCase) CreateUser(us domain.User) (*domain.User, error) {
 	}
 
 	us.ID = uu.String()
+	us.Status = domain.PENDING
 	us.CreatedAt = time.Now()
 	us.UpdatedAt = time.Now()
 

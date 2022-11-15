@@ -18,12 +18,12 @@ func NewUserSqliteRepository(db *sql.DB) domain.UserRepository {
 }
 
 func (u userrepository) Create(user domain.User) error {
-	stmt, err := u.db.Prepare("INSERT INTO user VALUES (?,?,?,?,?,?,?)")
+	stmt, err := u.db.Prepare("INSERT INTO user VALUES (?,?,?,?,?,?,?,?,?)")
 	if err != nil {
 		return err
 	}
 
-	_, err = stmt.Exec(user.ID, user.Name, user.Username, user.Weight, user.BirthDate, user.CreatedAt.Format(time.RFC3339), user.UpdatedAt.Format(time.RFC3339))
+	_, err = stmt.Exec(user.ID, user.Name, user.Username, user.Email, user.Status, user.Weight, user.BirthDate, user.CreatedAt.Format(time.RFC3339), user.UpdatedAt.Format(time.RFC3339))
 	if err != nil {
 		return err
 	}

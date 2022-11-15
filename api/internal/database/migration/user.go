@@ -10,6 +10,8 @@ func CreateUserTable(db *sql.DB) {
 		id varchar(255) not null,
 		name varchar(255),
 		username varchar(255),
+		email varchar(255),
+		status varchar(100),
 		weight DOUBLE,
 		birthdate varchar(255),
 		createdAt varchar(255),
