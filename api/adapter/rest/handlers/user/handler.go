@@ -36,7 +36,7 @@ func (u userHttpHandler) Create(c echo.Context) error {
 	err = u.notificationusecase.SendToQueue(domain.Notification{
 		Title:   "User Creation",
 		Message: "User Created Successfully",
-		UserID:  us.ID,
+		UserID:  us.Username,
 		Via:     "ntfy",
 	})
 	if err != nil {

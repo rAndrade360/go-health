@@ -11,6 +11,7 @@ import (
 	"github.com/rAndrade360/go-health/api/adapter/rest/handlers/health"
 	userhttp "github.com/rAndrade360/go-health/api/adapter/rest/handlers/user"
 	"github.com/rAndrade360/go-health/api/config"
+	notificationntfy "github.com/rAndrade360/go-health/api/internal/delivery/notification/ntfy"
 	notificationrabbit "github.com/rAndrade360/go-health/api/internal/delivery/notification/rabbitmq"
 	userrepo "github.com/rAndrade360/go-health/api/internal/repository/user/sqlite"
 	"github.com/rAndrade360/go-health/api/internal/usecase/notification"
@@ -44,8 +45,16 @@ func main() {
 
 	userRepo := userrepo.NewUserSqliteRepository(db)
 
+	sender := notificationntfy.NewNtfyNotificationSender()
 	userUseCase := userusecase.NewUserUseCase(userRepo)
-	notificationUseCase := notification.NewNotificationUseCase(npublisher)
+	notificationUseCase := notification.NewNotificationUseCase(npublisher, sender)
+	nconsumer := notificationrabbit.NewNotificationRabbitmqConsumer(cgf, conn, notificationUseCase)
+
+	nconsumer.SetupExchangeAndQueue("nty_queue")
+
+	go func() {
+		log.Fatal(nconsumer.Consume("nty_queue"))
+	}()
 
 	userHttpHandler := userhttp.NewUserHttpHandler(userUseCase, notificationUseCase)
 

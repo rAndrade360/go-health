@@ -8,12 +8,14 @@ import (
 )
 
 type notificationUseCase struct {
-	publisher domain.NotificationPublisher
+	publisher          domain.NotificationPublisher
+	notificationSender domain.NotificationSender
 }
 
-func NewNotificationUseCase(publisher domain.NotificationPublisher) domain.NotificationUseCase {
+func NewNotificationUseCase(publisher domain.NotificationPublisher, sender domain.NotificationSender) domain.NotificationUseCase {
 	return notificationUseCase{
-		publisher: publisher,
+		publisher:          publisher,
+		notificationSender: sender,
 	}
 }
 
@@ -26,4 +28,8 @@ func (n notificationUseCase) SendToQueue(ntf domain.Notification) error {
 	}
 
 	return n.publisher.Pusblish(b, "application/json")
+}
+
+func (n notificationUseCase) Send(nft domain.Notification) error {
+	return n.notificationSender.Send(nft)
 }

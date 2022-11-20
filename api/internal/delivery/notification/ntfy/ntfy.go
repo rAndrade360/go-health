@@ -9,7 +9,14 @@ import (
 	"github.com/rAndrade360/go-health/api/internal/domain"
 )
 
-func Send(ntf domain.Notification) error {
+type ntfy struct {
+}
+
+func NewNtfyNotificationSender() domain.NotificationSender {
+	return ntfy{}
+}
+
+func (ntfy) Send(ntf domain.Notification) error {
 	url := fmt.Sprintf("https://ntfy.sh/%s", ntf.UserID)
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodPost, url, strings.NewReader(ntf.Message))
 	if err != nil {
